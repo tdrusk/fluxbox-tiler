@@ -1,5 +1,9 @@
 #! /bin/bash
-#resizes windows
+#resizes windows with Ctrl + Alt + NumberPadDirection
+#Ctrl + Alt + 5 maximizes
+#Ctrl + Alt + Shift + 5 spreads all windows vertically
+#Ctrl + Alt + Super + 5 spreads all windows horizontally 
+
 
 #currently only panelbottom makes a difference. hopefully this will be fixed in the future.
 paneltop=0
