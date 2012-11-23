@@ -1,23 +1,31 @@
 #! /bin/bash
+#resizes windows
 
+#currently only panelbottom makes a difference. hopefully this will be fixed in the future.
 paneltop=0
 panelbottom=22
 panelleft=0
 panelright=0
 
+#i would not change anything below this line...
+
+#get width and height of the screen
 width=`xwininfo -root | grep Width | awk '{ print $2 }'`
 height=`xwininfo -root |grep Height | awk '{ print $2 }'`
 
+#calculate width and height of windows - adjusts for panel sizes too
 let width=$width-$panelleft-$panelright
 let height=$height-$paneltop-$panelbottom
 let widthhalf=$width/2
 let heighthalf=$height/2
 
+#calculate positioning of windows
 ytop=$paneltop; 
 let ybottom=$paneltop+$height/2
 xleft=$panelleft;
 let xright=$panelleft+$width/2
 
+#check to see if fluxbox-tiler has been used on this keys file before. if so, replace. if not, then append.
 startlinenumber=`cat $1 | grep "#FLUXBOXTILE - START - DONOTTOUCH" -nr | sed -n 's/^\([0-9]*\)[:].*/\1/p'`;
 if [ "$startlinenumber" != "" ] 
 then
@@ -33,6 +41,7 @@ else
 cat $1
 fi
 
+#append configuration to keys file
 echo "#FLUXBOXTILE - START"
 echo "#fill left half of screen"
 echo "Control Mod1 83 :macroCmd {ResizeTo "$widthhalf" "$height"} {MoveTo "$xleft" "$ytop"}"
