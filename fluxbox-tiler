@@ -1,0 +1,57 @@
+#! /bin/bash
+
+paneltop=0
+panelbottom=22
+panelleft=0
+panelright=0
+
+width=`xwininfo -root | grep Width | awk '{ print $2 }'`
+height=`xwininfo -root |grep Height | awk '{ print $2 }'`
+
+let width=$width-$panelleft-$panelright
+let height=$height-$paneltop-$panelbottom
+let widthhalf=$width/2
+let heighthalf=$height/2
+
+ytop=$paneltop; 
+let ybottom=$paneltop+$height/2
+xleft=$panelleft;
+let xright=$panelleft+$width/2
+
+startlinenumber=`cat $1 | grep "#FLUXBOXTILE - START - DONOTTOUCH" -nr | sed -n 's/^\([0-9]*\)[:].*/\1/p'`;
+if [ "$startlinenumber" != "" ] 
+then
+
+let startlinenumber=$startlinenumber-1
+head -n $startlinenumber $1
+
+finishlinenumber=`cat $1 | grep "#FLUXBOXTILE - FINISH - DONOTTOUCH" -nr | sed -n 's/^\([0-9]*\)[:].*/\1/p'`;
+#let finishlinenumber=$linenumber-1
+tail -n $finishlinenumber $1
+
+else
+cat $1
+fi
+
+echo "#FLUXBOXTILE - START"
+echo "#fill left half of screen"
+echo "Control Mod1 83 :macroCmd {ResizeTo "$widthhalf" "$height"} {MoveTo "$xleft" "$ytop"}"
+echo "#fill right half of screen"
+echo "Control Mod1 85 :macroCmd {ResizeTo "$widthhalf" "$height"} {MoveTo "$xright" "$ytop"}"
+echo "#fill top half of screen"
+echo "Control Mod1 80 :macroCmd {ResizeTo "$width" "$heighthalf"} {MoveTo "$xleft" "$ytop"}"
+echo "#fill bottom half of screen"
+echo "Control Mod1 88 :macroCmd {ResizeTo "$width" "$heighthalf"} {MoveTo "$xleft" "$ybottom"}"
+echo "#fill top left of screen"
+echo "Control Mod1 79 :macroCmd {ResizeTo "$widthhalf" "$heighthalf"} {MoveTo "$xleft" "$ytop"}"
+echo "#fill bottom left of screen"
+echo "Control Mod1 87 :macroCmd {ResizeTo "$widthhalf" "$heighthalf"} {MoveTo "$xleft" "$ybottom"}"
+echo "#fill top right of screen"
+echo "Control Mod1 81 :macroCmd {ResizeTo "$widthhalf" "$heighthalf"} {MoveTo "$xright" "$ytop"}"
+echo "#fill bottom right of screen"
+echo "Control Mod1 89 :macroCmd {ResizeTo "$widthhalf" "$heighthalf"} {MoveTo "$xright" "$ybottom"}"
+echo "#fill entire screen"
+echo "Control Mod1 84 :Maximize"
+echo "Control Mod1 Shift 84 :ArrangeWindowsVertical"
+echo "Control Mod1 Mod4 84 :ArrangeWindowsHorizontal"
+echo "#FLUXBOXTILE - FINISH"
