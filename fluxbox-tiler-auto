@@ -1,0 +1,10 @@
+#! /bin/bash
+
+#USE AT YOUR OWN RISK. THIS MODIFIES THE ~/.fluxbox/keys FILE. CAN BE DESCRUCTIVE. ALWAYS MAKE A BACKUP OF YOUR ~/.fluxbox/keys before running.
+
+# pipes the output of ~/.fluxbox/keys to a temporary file
+./fluxbox-tiler ~/.fluxbox/keys > tempy.txt
+# copy temporary file to ~/.fluxbox/keys
+cp tempy.txt ~/.fluxbox/keys 
+# remove temporary file
+rm tempy.txt
