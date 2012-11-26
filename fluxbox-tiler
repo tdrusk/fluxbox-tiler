@@ -35,15 +35,16 @@ xleft=$panelleft;
 let xright=$panelleft+$width/2
 
 #check to see if fluxbox-tiler has been used on this keys file before. if so, replace. if not, then append.
-startlinenumber=`cat $1 | grep "#FLUXBOXTILE - START - DONOTTOUCH" -nr | sed -n 's/^\([0-9]*\)[:].*/\1/p'`;
+startlinenumber=`cat $1 | grep "#FLUXBOXTILE - START" -nr | sed -n 's/^\([0-9]*\)[:].*/\1/p'`;
 if [ "$startlinenumber" != "" ] 
 then
 
 let startlinenumber=$startlinenumber-1
 head -n $startlinenumber $1
 
-finishlinenumber=`cat $1 | grep "#FLUXBOXTILE - FINISH - DONOTTOUCH" -nr | sed -n 's/^\([0-9]*\)[:].*/\1/p'`;
-#let finishlinenumber=$linenumber-1
+linesinfile=`wc -l $1 | sed -n 's/^\([0-9]*\)[:].*/\1/p'`
+finishlinenumber=`tac $1 | grep "#FLUXBOXTILE - FINISH" -nr | sed -n 's/^\([0-9]*\)[:].*/\1/p'`;
+let finishlinenumber=$finishlinenumber-linesinfile-1
 tail -n $finishlinenumber $1
 
 else
